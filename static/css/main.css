@@ -1,0 +1,73 @@
+body {
+  padding: 16px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+header * {
+  flex: 1;
+  min-width: max-content;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  text-align: center;
+}
+
+.company-name {
+  color: blue; /* Link color */
+  text-decoration: underline; /* Underlined, like most links */
+  cursor: pointer; /* Changes the cursor to a hand, indicating clickability */
+  padding: 5px; /* Some padding for better visuals and hover/click experience */
+  display: inline-block; /* To keep them inline like spans but allow padding/margins */
+  transition: color 0.3s; /* Smooth transition for hover color change */
+}
+
+.company-name:hover {
+  color: darkblue; /* Slightly darker color on hover */
+}
+
+#chart1 {
+  width: 600px;
+  height: 300px;
+}
+
+#tickerContent {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "info chart1"
+    "chart3 chart2";
+  grid-template-rows: auto 1fr 1fr;
+  grid-template-columns: 1fr 1fr auto;
+  height: 100vh;
+}
+
+#tickerContent h1 {
+  grid-area: header;
+  text-align: center;
+}
+
+#stockInfo {
+  display: block;
+  grid-area: info;
+  overflow-y: scroll;
+  min-height: 0; /* Ensures that the element can shrink below its content size */
+  height: 100%; /* Maximum height is the height of the grid cell */
+}
+
+#chart1 {
+  grid-area: chart1;
+}
+#chart2 {
+  grid-area: chart2;
+}
+#chart3 {
+  grid-area: chart3;
+}
