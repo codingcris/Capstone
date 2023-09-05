@@ -4,6 +4,7 @@ export default class ViewTicker {
   constructor() {
     this._contentElement = document.createElement("div");
     this._contentElement.id = "tickerContent";
+    this.mlTickers = ["AAPL", "JPM", "KO"];
   }
 
   get content() {
@@ -198,6 +199,74 @@ export default class ViewTicker {
         tickerHeading.textContent = ticker;
         this.content.appendChild(tickerHeading);
 
+        let prices = document.createElement("div");
+        prices.id = "prices";
+        this.content.appendChild(prices);
+
+        let currentPrice = document.createElement("h2");
+        currentPrice.id = "price";
+        currentPrice.textContent = "Current Price: " + data.info.currentPrice;
+        prices.appendChild(currentPrice);
+
+        let predictedPrice = document.createElement("h2");
+        predictedPrice.textContent = "Predicted Closing Price: " + "$XXX.XX";
+        predictedPrice.id = "predictedPrice";
+
+        if (this.mlTickers.includes(ticker)) {
+          prices.appendChild(predictedPrice);
+          this.content.id = "mlTickerContent";
+
+          let predictButton = document.createElement("button");
+          predictButton.textContent = "Predict";
+          predictButton.addEventListener("click", (event) => {
+            const userConfirmed =
+              window.confirm(`Disclaimer: The predictions provided by this tool are based on a simplistic machine learning model and should not be your sole basis for making investment decisions. Always conduct your own research and consult with a qualified financial advisor before making any investment. We are not responsible for any financial losses incurred.
+              
+Do you wish to proceed?`);
+
+            if (userConfirmed) {
+              // Existing prediction code here
+              fetchPredictions(ticker);
+            } else {
+              console.log("User chose not to proceed.");
+            }
+
+            function fetchPredictions(ticker) {
+              // Construct the URL for the API endpoint
+              const url = `/ticker/${ticker}/predict`;
+
+              // Use fetch to make a GET request to the API endpoint
+              fetch(url)
+                .then((response) => {
+                  // Check if the fetch was successful
+                  if (response.ok) {
+                    return response.json(); // Parse the body of the response as JSON
+                  }
+                  throw new Error("Failed to fetch data"); // If the fetch fails, reject the promise
+                })
+                .then((predictions) => {
+                  let nearest_prediction = predictions[0];
+                  let [date, price] = Object.entries(nearest_prediction)[0];
+                  price = parseFloat(price).toFixed(2);
+
+                  predictedPrice.textContent =
+                    "Predicted Closing Price: " + "$XXX.XX";
+
+                  predictedPrice.innerHTML =
+                    predictedPrice.textContent.replace(/XXX.XX/g, price) +
+                    "<br/>For: " +
+                    date;
+                })
+                .catch((error) => {
+                  // Handle any errors
+                  console.log("Fetching failed:", error);
+                  // Your code to handle errors goes here
+                });
+            }
+          });
+          prices.appendChild(predictButton);
+        }
+
         let candlestickChart = document.createElement("div");
         candlestickChart.id = "chart1";
         this.content.appendChild(candlestickChart);
@@ -269,13 +338,6 @@ export default class ViewTicker {
           infoTable.appendChild(tableRow);
         });
         this.content.appendChild(infoTable);
-
-        let predictButton = document.createElement("button");
-        predictButton.textContent = "Predict";
-        predictButton.addEventListener("click", (event) => {
-          window.location.href = `/ticker/${this.ticker}/predict`;
-        });
-        this.content.appendChild(predictButton);
       });
   }
 }

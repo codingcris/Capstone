@@ -6,6 +6,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras import layers
 from pytz import timezone
+import json
 
 def df_to_windowed_df(dataframe, first_date, last_date, n=5):
     # Convert dates to naive datetime objects if they aren't already
@@ -122,18 +123,19 @@ def lstmModel(ticker):
 def createModels():
 
     def make_predictions(models):
-       def next_five_market_days(start_date):
-        start_date = pd.Timestamp(start_date)
+        def next_five_market_days(start_date):
+            start_date = pd.Timestamp(start_date)
     
-        all_dates = pd.date_range(start_date, periods=10, freq='B')
+            all_dates = pd.date_range(start_date, periods=10, freq='B')
     
-        next_5_days = all_dates[1:6]
+            next_5_days = all_dates[1:6]
     
-        return next_5_days
+            return next_5_days
 
         for ticker, model in models.items():
             data = yf.Ticker(ticker).history('5d')
             first_date = data.index[0]
+            last_date = data.index[-1]
             data = data['Close'].values
 
             data = data.reshape(1, 5, 1)
@@ -152,12 +154,12 @@ def createModels():
                 data = new_data_window  # Update the data window for the next iteration
 
             five_day_predictions = [float(x) for x in five_day_predictions]
-       
-        print('~~~~~~~~~~~~~~')
-        print(next_five_market_days(first_date))
-        print('~~~~~~~~~~~~~~')
-        predictions = {}
+            next_five_days = next_five_market_days(last_date).strftime('%Y-%m-%d').tolist()
 
+            predictions =  [{ day : prediction} for day, prediction in zip(next_five_days, five_day_predictions)]
+
+            with open('./models/predictions/' + ticker + '.json', 'w') as f:
+                json.dump(predictions, f)
 
 
             

@@ -41,7 +41,7 @@ th {
 #tickerContent {
   display: grid;
   grid-template-areas:
-    "header header"
+    "header prices"
     "info chart1"
     "chart3 chart2";
   grid-template-rows: auto 1fr 1fr;
@@ -49,9 +49,25 @@ th {
   height: 100vh;
 }
 
+#mlTickerContent {
+  display: grid;
+  grid-template-areas:
+    "header prices prices"
+    "info chart1 predictChart"
+    "chart3 chart2 predictChart";
+  grid-template-rows: auto 1fr 1fr;
+  grid-template-columns: 1fr 1fr auto;
+  height: 100vh;
+}
+
 #tickerContent h1 {
   grid-area: header;
-  text-align: center;
+}
+
+#prices {
+  grid-area: prices;
+  display: flex;
+  justify-content: space-between;
 }
 
 #stockInfo {

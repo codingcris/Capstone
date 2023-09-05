@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template,  send_file
 import yfinance as yf
 import pandas as pd
 from models import createModels
@@ -97,44 +97,15 @@ def get_ticker_data(ticker_string):
         'info': info
     }
 
-    def getPredictions(model):
-        # Step 1: Get the initial 5-day window
-        data = yf.Ticker(ticker_string).history('5d')['Close'].values
-        data = data.reshape(1, 5, 1)
-
-        five_day_predictions = []
-
-        for i in range(5):  # Step 4: Repeat 5 times for 5 days
-             # Step 2: Make a prediction for the next day
-            next_day_prediction = model.predict(data)[0, 0]
-
-             # Append the prediction to the list
-            five_day_predictions.append(next_day_prediction)
-
-             # Step 3: Update the window
-            new_data_window = np.roll(data, shift=-1, axis=1)  # Shift the data window
-            new_data_window[0, -1, 0] = next_day_prediction  # Insert the new prediction as the newest day
-            data = new_data_window  # Update the data window for the next iteration
-        
-        five_day_predictions = [float(x) for x in five_day_predictions]
-        return five_day_predictions
-
-
-    if ticker_string in models:
-        predictions = getPredictions(models[ticker_string])
-        data['predictions'] = predictions
-
     return jsonify(data)
 
 
 @app.route('/ticker/<ticker>/predict', methods=['GET'])
 def predict(ticker):
-    data = yf.Ticker(ticker).history('5d')
-    data = data['Close']
-    data = np.array(data)
-    data = data.reshape(1,5,1)
-    prediction = models[ticker].predict(data)
-    return jsonify({'prediction': prediction.tolist()})
+    try:
+        return send_file('models/predictions/' + ticker + '.json')
+    except FileNotFoundError:
+        return "File not found", 404
 
 
 if __name__ == "__main__":
