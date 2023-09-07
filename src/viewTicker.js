@@ -191,7 +191,6 @@ export default class ViewTicker {
 
     this.content.innerHTML = "";
     this.ticker = ticker;
-    console.log(this);
     fetch("/ticker/" + ticker)
       .then((response) => response.json())
       .then((data) => {
@@ -256,6 +255,8 @@ Do you wish to proceed?`);
                     predictedPrice.textContent.replace(/XXX.XX/g, price) +
                     "<br/>For: " +
                     date;
+
+                  // Your code to process the predictions array goes here
                 })
                 .catch((error) => {
                   // Handle any errors

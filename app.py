@@ -65,6 +65,10 @@ def get_index():
 
 @app.route('/companies', methods=['GET'])
 def get_companies():
+    for company in companies:
+        stock = yf.Ticker(company["ticker"])
+        stock_price = stock.history(period="1d")['Close'].iloc[0]
+        company['price'] = stock_price
     return jsonify(companies)
 
 

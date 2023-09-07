@@ -1,5 +1,5 @@
 import HomePage from "./homePage.js";
-import ViewTicker from "./viewTicker.js";
+import ViewTicker from "./wololo.js";
 
 class Controller {
   constructor() {
@@ -13,7 +13,6 @@ class Controller {
     document.body.addEventListener("companySelected", (event) => {
       const ticker = event.detail;
       this.viewTicker.setTicker(ticker);
-      window.history.pushState(null, null, "/ticker/" + ticker);
       this.render(this.viewTicker.content);
     });
   }

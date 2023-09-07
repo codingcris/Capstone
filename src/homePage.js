@@ -10,6 +10,8 @@ export default class HomePage {
   }
 
   createCompaniesTable() {
+    const mlCapableTickers = ["AAPL", "KO", "JPM"];
+
     fetch("./companies")
       .then((response) => response.json())
       .then((companies) => {
@@ -24,7 +26,7 @@ export default class HomePage {
                     <tr>
                         <th>Ticker</th>
                         <th>Company Name</th>
-                        <th>Closing Price</th>
+                        <th>Current Price</th>
                     <tr>
                 </thead>
             `;
@@ -36,6 +38,13 @@ export default class HomePage {
           let price = document.createElement("td");
 
           ticker.textContent = `${company.ticker}`;
+          if (mlCapableTickers.includes(company.ticker.toUpperCase())) {
+            // Create an icon element (you can replace this with an actual image or any other icon)
+            let icon = document.createElement("span");
+            icon.textContent = "🤖"; // Using a star emoji as an example
+            icon.classList.add("ml-icon"); // Optional: Add a class for styling
+            ticker.appendChild(icon);
+          }
           let nameSpan = document.createElement("span");
           nameSpan.setAttribute("data-ticker", company.ticker);
           nameSpan.classList.add("company-name");
@@ -52,7 +61,7 @@ export default class HomePage {
           });
           name.appendChild(nameSpan);
 
-          price.textContent = `0.0`;
+          price.textContent = company.price;
 
           row.appendChild(ticker);
           row.appendChild(name);
