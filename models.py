@@ -5,7 +5,6 @@ import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras import layers
-from pytz import timezone
 import json
 
 def df_to_windowed_df(dataframe, first_date, last_date, n=5):

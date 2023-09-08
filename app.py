@@ -2,7 +2,6 @@ from flask import Flask, jsonify, render_template,  send_file
 import yfinance as yf
 import pandas as pd
 from models import createModels
-import numpy as np
 
 app = Flask(__name__)
 
