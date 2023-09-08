@@ -1,5 +1,5 @@
 import HomePage from "./homePage.js";
-import ViewTicker from "./wololo.js";
+import ViewTicker from "./viewTicker.js";
 
 class Controller {
   constructor() {
