@@ -4,11 +4,14 @@ import pandas as pd
 import os  # Make sure you import os to use os.environ
 from flask_sqlalchemy import SQLAlchemy
 from models import Company
+from database import db
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # This line is optional but can prevent a warning
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'your_database_uri_here'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Link the app with the db
+db.init_app(app)
 
 # Sample data
 companies = [
