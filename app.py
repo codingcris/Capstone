@@ -6,6 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 from models import Company
 from database import db
 
+app = Flask(__name__)
+
+
 DATABASE_URL = os.environ.get('DATABASE_URL').replace("postgres://", "postgresql://")
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
