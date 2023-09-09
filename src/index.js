@@ -4,6 +4,7 @@ import ViewTicker from "./viewTicker.js";
 class Controller {
   constructor() {
     this.header = this.createHeader();
+    this.footer = this.createFooter();
     this.initializeDocument();
 
     this.homePage = new HomePage();
@@ -23,7 +24,7 @@ class Controller {
     const CONTENT = document.createElement("div");
     CONTENT.id = "content";
 
-    BODY.append(this.header, CONTENT);
+    BODY.append(this.header, CONTENT, this.footer);
   }
 
   createHeader() {
@@ -35,6 +36,22 @@ class Controller {
     `;
 
     return HEADER;
+  }
+
+  createFooter() {
+    const FOOTER = document.createElement("footer");
+    FOOTER.innerHTML = `
+    <a id="about">About Us</a>
+    <a id"ourModels" href="/our-models">Our Models</a>
+    `;
+
+    return FOOTER;
+
+    // document.getElementById("about").onclick((e) => {});
+
+    // document.getElementById("ourModels").onClick((e) => {
+    //   render();
+    // });
   }
 
   render(content) {

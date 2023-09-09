@@ -116,5 +116,9 @@ def predict(ticker):
         return "File not found", 404
 
 
+@app.route('/our-models', methods=['GET'])
+def our_models():
+    render_template('Capstone.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
