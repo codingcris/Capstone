@@ -1,9 +1,14 @@
-from flask import Flask, jsonify, render_template,  send_file
+from flask import Flask, jsonify, render_template, send_file
 import yfinance as yf
 import pandas as pd
-from models import createModels
+import os  # Make sure you import os to use os.environ
+from flask_sqlalchemy import SQLAlchemy
+from models import Company
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # This line is optional but can prevent a warning
+db = SQLAlchemy(app)
 
 # Sample data
 companies = [
@@ -50,12 +55,6 @@ companies = [
     {"ticker": "GM", "name": "General Motors Company", "sector": "Automotive",
         "description": "One of the world's largest automakers, with a rich heritage in designing, manufacturing, and selling cars, trucks, and auto parts."}
 ]
-
-
-models = createModels()
-for ticker, model in models.items():
-    model.save('models/' + ticker + '_model.h5')
-
 
 @app.route('/', methods=['GET'])
 def get_index():
