@@ -39,10 +39,9 @@ export default class HomePage {
 
           ticker.textContent = `${company.ticker}`;
           if (mlCapableTickers.includes(company.ticker.toUpperCase())) {
-            // Create an icon element (you can replace this with an actual image or any other icon)
             let icon = document.createElement("span");
-            icon.textContent = "🤖"; // Using a star emoji as an example
-            icon.classList.add("ml-icon"); // Optional: Add a class for styling
+            icon.textContent = "🤖";
+            icon.classList.add("ml-icon");
             ticker.appendChild(icon);
           }
           let nameSpan = document.createElement("span");

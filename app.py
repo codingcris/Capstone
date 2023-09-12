@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, send_file
 import yfinance as yf
 import pandas as pd
-import os  # Make sure you import os to use os.environ
+import os  
 from flask_sqlalchemy import SQLAlchemy
 from models import Company
 from database import db
@@ -13,10 +13,8 @@ DATABASE_URL = os.environ.get('DATABASE_URL').replace("postgres://", "postgresql
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Link the app with the db
 db.init_app(app)
 
-# Sample data
 companies = [
     {"ticker": "AAPL", "name": "Apple Inc.", "sector": "Technology",
         "description": "A global powerhouse in consumer electronics, software, and digital services, best known for its iPhone and Mac products."},

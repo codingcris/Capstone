@@ -46,12 +46,6 @@ class Controller {
     `;
 
     return FOOTER;
-
-    // document.getElementById("about").onclick((e) => {});
-
-    // document.getElementById("ourModels").onClick((e) => {
-    //   render();
-    // });
   }
 
   render(content) {

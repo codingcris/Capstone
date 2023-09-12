@@ -29,16 +29,13 @@ export default class ViewTicker {
   }
 
   _displayTickerInfo(ticker, data) {
-    // Code for displaying ticker and other information
     this.content.innerHTML = "";
     this.ticker = ticker;
 
-    // ticker heading
     let tickerHeading = document.createElement("h1");
     tickerHeading.textContent = ticker;
     this.content.appendChild(tickerHeading);
 
-    // prices section
     let prices = document.createElement("div");
     prices.id = "prices";
     this.content.appendChild(prices);
@@ -65,7 +62,6 @@ export default class ViewTicker {
       prices.appendChild(predictButton);
     }
 
-    // info table
     let infoTable = document.createElement("table");
     infoTable.id = "stockInfo";
     console.log(typeof data.info);
@@ -137,17 +133,14 @@ export default class ViewTicker {
   }
 
   _fetchPredictions(ticker) {
-    // Construct the URL for the API endpoint
     const url = `/ticker/${ticker}/predict`;
 
-    // Use fetch to make a GET request to the API endpoint
     fetch(url)
       .then((response) => {
-        // Check if the fetch was successful
         if (response.ok) {
-          return response.json(); // Parse the body of the response as JSON
+          return response.json();
         }
-        throw new Error("Failed to fetch data"); // If the fetch fails, reject the promise
+        throw new Error("Failed to fetch data");
       })
       .then((predictions) => {
         let nearest_prediction = predictions[0];
@@ -166,10 +159,8 @@ export default class ViewTicker {
           return { time: date, value: parseFloat(price) };
         });
 
-        console.log("Prediction Data:", predictionData); // Log the prediction dataa
-
+        console.log("Prediction Data:", predictionData);
         if (this.pricesChart) {
-          // Check if the chart exists
           const predictionSeries = this.pricesChart.addLineSeries({
             color: "purple",
             lineWidth: 2,
@@ -177,7 +168,6 @@ export default class ViewTicker {
 
           predictionSeries.setData(predictionData);
 
-          // Add markers
           const predictionMarkers = predictionData.map((p) => {
             return {
               time: p.time,
@@ -188,13 +178,11 @@ export default class ViewTicker {
           });
           predictionSeries.setMarkers(predictionMarkers);
         } else {
-          console.log("Chart not initialized"); // Log an error message if the chart doesn't exist
+          console.log("Chart not initialized");
         }
       })
       .catch((error) => {
-        // Handle any errors
         console.log("Fetching failed:", error);
-        // Your code to handle errors goes here
       });
   }
 
@@ -334,26 +322,21 @@ export default class ViewTicker {
       },
     });
 
-    // Adding line series for closing prices
     const lineSeries = chart.addLineSeries();
     lineSeries.setData(
       data.slice(-200).map((item) => ({ time: item.time, value: item.close }))
     );
 
-    // Calculate 50-day moving average
     const movingAverage50 = this._calculateMovingAverage(data, 50);
 
-    // Adding line series for 50-day moving average
     const ma50Series = chart.addLineSeries({
       color: "red",
       lineWidth: 2,
     });
     ma50Series.setData(movingAverage50);
 
-    // Calculate 200-day moving average
     const movingAverage200 = this._calculateMovingAverage(data, 200);
 
-    // Adding line series for 200-day moving average
     const ma200Series = chart.addLineSeries({
       color: "green",
       lineWidth: 2,
