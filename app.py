@@ -1,11 +1,11 @@
 from flask import Flask, jsonify, render_template, send_file
 import yfinance as yf
 import pandas as pd
-import os  
+import os
 from flask_sqlalchemy import SQLAlchemy
 from models import Company
 from database import db
-from oldmodels import createModels
+# from oldmodels import createModels
 
 app = Flask(__name__)
 
@@ -63,6 +63,7 @@ companies = [
 
 models = createModels()
 
+
 @app.route('/', methods=['GET'])
 def get_index():
     return render_template('index.html')
@@ -100,7 +101,7 @@ def get_ticker_data(ticker_string):
 
     history_yf = history_yf.to_dict(orient='records')
     info = ticker.info
-    
+
     data = {
         'history': history_yf,
         'info': info
@@ -120,6 +121,7 @@ def predict(ticker):
 @app.route('/our-models', methods=['GET'])
 def our_models():
     return render_template('Capstone.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
