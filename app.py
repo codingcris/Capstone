@@ -5,15 +5,16 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from models import Company
 from database import db
+from oldmodels import createModels
 
 app = Flask(__name__)
 
 
-DATABASE_URL = os.environ.get('DATABASE_URL').replace("postgres://", "postgresql://")
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# DATABASE_URL = os.environ.get('DATABASE_URL').replace("postgres://", "postgresql://")
+# app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db.init_app(app)
+# db.init_app(app)
 
 companies = [
     {"ticker": "AAPL", "name": "Apple Inc.", "sector": "Technology",
@@ -59,6 +60,8 @@ companies = [
     {"ticker": "GM", "name": "General Motors Company", "sector": "Automotive",
         "description": "One of the world's largest automakers, with a rich heritage in designing, manufacturing, and selling cars, trucks, and auto parts."}
 ]
+
+models = createModels()
 
 @app.route('/', methods=['GET'])
 def get_index():
